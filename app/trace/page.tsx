@@ -4,7 +4,7 @@ const TracePage = () => {
     return (
         <div className="flex">
             <Sidebar />
-            <main className="w-full">
+            <main className="w-full px-4">
                 <div className="flex items-center pl-6 border-1 border-b">
                     <svg className="w-[28px] h-[28px] text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5h6M9 8h6m-6 3h6M4.996 5h.01m-.01 3h.01m-.01 3h.01M2 1h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>

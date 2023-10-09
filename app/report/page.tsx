@@ -1,5 +1,4 @@
 import Sidebar from "@/app/components/Sidebar";
-
 const ReportPage = () => {
     return (
         <div className="flex">
@@ -27,7 +26,7 @@ const ReportPage = () => {
                         <textarea name="x" id="details" cols={30} rows={10} placeholder="อธิบายอาการที่เกิดปัญหา" className="border-2 rounded py-1 px-2"></textarea>
                         <label htmlFor="x" className="mt-3">รูปภาพ</label>
                         <input type="file" accept="image/png, image/jpeg" className="border-2 p-2" />
-                        <button className="rounded bg-blue-400 text-white mt-3 py-1.5">แจ้งซ่อม</button>
+                        <button className="rounded bg-blue-400 text-white mt-3 py-1.5">แจ้งเรื่อง</button>
                     </div>
                 </div>
             </main>

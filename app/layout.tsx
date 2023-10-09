@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import {Inter, Kanit} from 'next/font/google'
 import Sidebar from "./components/Sidebar"
+import Footer from './components/Footer'
 
 const inter = Kanit({ subsets: ['latin'], weight: "400" })
 
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
+      <Footer />
       </body>
     </html>
   )

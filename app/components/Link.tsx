@@ -19,7 +19,7 @@ const LinkSidebar: React.FC<Props> = ({ NavLink }) => {
                       href={item.path}
                       className={`flex items-center px-3 py-3 text-slate-900 transition-colors 
                       duration-300 transform rounded-lg ${
-                            pathname === item.path ? "bg-blue-100" : "hover:bg-gray-100"
+                            pathname === item.path ? "bg-blue-50" : "hover:bg-gray-100"
                       }`}>
                     {item.icon}
                     <span className="mx-2 text-sm font-medium">{item.name}</span>
