@@ -16,6 +16,7 @@ const TracePage = () => {
                     <tr>
                         <th scope="col" className="px-6 py-4 font-medium text-gray-900">ไอดี</th>
                         <th scope="col" className="px-6 py-4 font-medium text-gray-900">อุปกรณ์</th>
+                        <th scope="col" className="px-6 py-4 font-medium text-gray-900">แผนก</th>
                         <th scope="col" className="px-6 py-4 font-medium text-gray-900">วันที่</th>
                         <th scope="col" className="px-6 py-4 font-medium text-gray-900">สถานะ</th>
                         <th scope="col" className="px-6 py-4 font-medium text-gray-900">โดย</th>
@@ -26,6 +27,7 @@ const TracePage = () => {
                     <tr className="hover:bg-gray-50">
                         <th className="px-6 py-4 font-medium text-gray-900">0001</th>
                         <td className="px-6 py-4">Computer</td>
+                        <td className="px-6 py-4">แผนกการตลาด</td>
                         <td className="px-6 py-4">10/10/66</td>
                         <td className="px-6 py-4">
                             <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
@@ -35,12 +37,13 @@ const TracePage = () => {
                                 แก้ไขแล้ว
                             </span>
                         </td>
-                        <td className="px-6 py-4">Helen Howard</td>
+                        <td className="px-6 py-4">mechanic</td>
                         <td className="px-6 py-4">10/10/66</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                         <th className="px-6 py-4 font-medium text-gray-900">0002</th>
                         <td className="px-6 py-4">Router</td>
+                        <td className="px-6 py-4">แผนกไอที</td>
                         <td className="px-6 py-4">10/10/66</td>
                         <td className="px-6 py-4">
                             <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
@@ -56,6 +59,7 @@ const TracePage = () => {
                     <tr className="hover:bg-gray-50">
                         <th className="px-6 py-4 font-medium text-gray-900">0003</th>
                         <td className="px-6 py-4">Monitor</td>
+                        <td className="px-6 py-4">แผนกบัญชี</td>
                         <td className="px-6 py-4">10/10/66</td>
                         <td className="px-6 py-4">
                             <span className="inline-flex items-center gap-1 rounded-full bg-yellow-50 px-2 py-1 text-xs font-semibold text-yellow-600">
@@ -65,7 +69,7 @@ const TracePage = () => {
                                 กำลังดำเนินการแก้ไข
                             </span>
                         </td>
-                        <td className="px-6 py-4">Helen Howard</td>
+                        <td className="px-6 py-4">mechanic</td>
                         <td className="px-6 py-4">10/10/66</td>
                     </tr>
                     </tbody>
