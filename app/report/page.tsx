@@ -20,11 +20,11 @@ const ReportPage = () => {
                             <input id="floor" type="text" placeholder="ห้อง" className="w-full border-2 py-1 px-2 rounded" />
                         </div>
                         <label htmlFor="department" className="mt-3">แผนก</label>
-                        <input id="department" type="text" className="border-2 py-1 rounded" />
-                        <label htmlFor="type" className="mt-3">ประเภท</label>
-                        <input id="type" type="text" className="border-2 py-1 rounded" />
+                        <input id="department" type="text" className="border-2 py-1 px-2 rounded" />
+                        <label htmlFor="type" className="mt-3">อุปกรณ์</label>
+                        <input id="type" type="text" placeholder="ex computer, table" className="border-2 py-1 px-2 rounded" />
                         <label htmlFor="details" className="mt-3">รายละเอียด</label>
-                        <textarea name="x" id="details" cols={30} rows={10} className="border-2 rounded"></textarea>
+                        <textarea name="x" id="details" cols={30} rows={10} placeholder="อธิบายอาการที่เกิดปัญหา" className="border-2 rounded py-1 px-2"></textarea>
                         <label htmlFor="x" className="mt-3">รูปภาพ</label>
                         <input type="file" accept="image/png, image/jpeg" className="border-2 p-2" />
                         <button className="rounded bg-blue-400 text-white mt-3 py-1.5">แจ้งซ่อม</button>
