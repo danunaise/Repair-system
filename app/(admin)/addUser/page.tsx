@@ -12,7 +12,7 @@ const people = [
     { name: 'แผนกบัญชี/การเงิน' },
     { name: 'แผนกไอที' },
 ]
-const addUsersPage = () => {
+const AddUsersPage = () => {
     const [selected, setSelected] = useState(people[0])
     return (
         <div className="flex h-screen">
@@ -117,4 +117,4 @@ const addUsersPage = () => {
     )
 }
 
-export default addUsersPage;
+export default AddUsersPage;
