@@ -1,5 +1,5 @@
 "use client";
-import React, {Fragment, useState} from 'react';
+import React, { Fragment, useState } from 'react';
 import Sidebar from "@/app/components/sidebar_admin/Sidebar";
 import {Listbox, Transition} from "@headlessui/react";
 import {CheckIcon, ChevronUpDownIcon} from "@heroicons/react/20/solid";
@@ -12,7 +12,7 @@ const people = [
     { name: 'แผนกบัญชี/การเงิน' },
     { name: 'แผนกไอที' },
 ]
-const addUserPage = () => {
+const addUsersPage = () => {
     const [selected, setSelected] = useState(people[0])
     return (
         <div className="flex h-screen">
@@ -117,4 +117,4 @@ const addUserPage = () => {
     )
 }
 
-export default addUserPage;
+export default addUsersPage;
