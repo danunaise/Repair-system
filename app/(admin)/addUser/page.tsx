@@ -92,6 +92,12 @@ const AddUsersPage = () => {
                                         </Transition>
                                     </div>
                                 </Listbox>
+                                <label htmlFor={"Email"} className="block uppercase tracking-wide text-gray-700 mt-3 text-xs font-bold mb-2">Email</label>
+                                <input id={"Email"} name={"Email"}
+                                       type={"text"} placeholder={"Email"} required
+                                       className="appearance-none block w-full bg-gray-200 text-gray-700 border
+                                       border-gray-200 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                />
                                 <label htmlFor={"Username"} className="block uppercase tracking-wide text-gray-700 mt-3 text-xs font-bold mb-2">Username</label>
                                 <input id={"Username"} name={"Username"}
                                        type={"text"} placeholder={"Username"} required
