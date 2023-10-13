@@ -3,6 +3,7 @@ import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import Sidebar from "@/app/components/Sidebar";
+import axios from "axios";
 
 const people = [
     { name: 'เลือกแผนก' },
@@ -14,6 +15,28 @@ const people = [
 ]
 const ReportPage = () => {
     const [selected, setSelected] = useState(people[0])
+    console.log(selected.name)
+
+    const [room, setRoom] = useState('')
+    const [floor, setFloor] = useState('')
+    const [department, setDepartment] = useState('')
+    const [title, setTitle] = useState('')
+    const [details, setDetails] = useState('')
+    const handleSubmit = (e: any) => {
+        e.preventDefault()
+        axios.post('http://localhost:5000/report', {
+            roomId: parseInt(room),
+            // floor: e.target.floor.value,
+            department: selected.name,
+            title: title,
+            description: details,
+        }).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+            alert(err.response.data.message)
+        })
+    }
     return (
         <div className="flex">
             <Sidebar />
@@ -26,21 +49,21 @@ const ReportPage = () => {
                 </div>
                 <div className="px-20 w-[800px]">
                     <div>
-                        <form className="flex flex-col">
+                        <form className="flex flex-col" onSubmit={handleSubmit}>
                             <div className="mt-3 flex items-center space-x-1.5">
                                 <label htmlFor="room" className="mr-3">ห้อง</label>
                                 <input id="room" type="text" placeholder="หมายเลขห้อง" required
                                        className="flex-1 border-2 py-1 px-2 rounded"
+                                       value={room} onChange={e => setRoom(e.target.value)}
                                 />
                                 <label htmlFor="floor" className="pl-8 w-[65px]">ชั้น</label>
-                                <input id="floor" type="number" placeholder="ห้อง" required
-                                       className="flex-1 border-2 py-1 px-2 rounded" />
+                                <input id="floor" type="number" placeholder="ชั้น" required
+                                       className="flex-1 border-2 py-1 px-2 rounded"
+                                       value={floor} onChange={e => setFloor(e.target.value)}
+                                />
                             </div>
                             <div className="w-full mt-3 flex items-center space-x-1.5">
                                 <label htmlFor="department">แผนก</label>
-                                {/*<input id="department" type="text"*/}
-                                {/*       className="flex-1 border-2 py-1 px-2 rounded"*/}
-                                {/*/>*/}
                                 <Listbox value={selected} onChange={setSelected}>
                                     <div className="flex-1 relative mt-1">
                                         <Listbox.Button className="relative w-full cursor-default rounded bg-white py-1.5 pl-3 pr-10 text-left border-2 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
@@ -94,13 +117,17 @@ const ReportPage = () => {
                                 <label htmlFor="type" className="px-2">อุปกรณ์</label>
                                 <input id="type" type="text" placeholder="ex computer, table"
                                        className="flex-1 border-2 py-1 px-2 rounded"
+                                       value={title} onChange={e => setTitle(e.target.value)}
                                 />
                             </div>
                             <label htmlFor="details" className="mt-3 mb-1">รายละเอียด</label>
-                                <textarea name="x" id="details" cols={30} rows={10} placeholder="อธิบายอาการที่เกิดปัญหา" className="border-2 rounded py-1 px-2"></textarea>
+                                <textarea name="x" id="details" cols={30} rows={10} placeholder="อธิบายอาการที่เกิดปัญหา"
+                                          className="border-2 rounded py-1 px-2"
+                                          value={details} onChange={e => setDetails(e.target.value)}
+                                />
                             <label htmlFor="images" className="mt-3 mb-1">รูปภาพ</label>
                                 <input type="file" id="images" accept="image/png, image/jpeg" className="border-2 p-2" disabled={true} />
-                            <button className="rounded bg-blue-400 text-white mt-3 py-1.5">แจ้งเรื่อง</button>
+                            <button className="rounded bg-blue-400 text-white mt-3 py-1.5" type={"submit"}>แจ้งเรื่อง</button>
                         </form>
                     </div>
                 </div>
