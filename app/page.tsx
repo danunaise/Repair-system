@@ -1,15 +1,32 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import Sidebar from "@/app/components/Sidebar";
+"use client";
+import React, { useState } from "react";
+import axios from "axios";
 
 export default function Home() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        const login = await axios.post('http://localhost:5000/auth/login', {
+            username,
+            password
+        }).then((response) => {
+            console.log(response);
+            console.log(response.data.access_token)
+            sessionStorage.setItem('access_token', response.data.access_token);
+            window.location.href = '/report';
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
   return (
       <div className="flex h-screen">
           <main className="flex-grow flex items-center justify-center">
               <div>
                   <div className="flex items-center">
                       <div className="card bg-white w-[350px] px-5 shadow-lg rounded-md">
-                          <form action="">
+                          <form onSubmit={handleSubmit}>
                               <div className="flex-col">
                                   <h1 className="text-center text-2xl">
                                       <svg className="w-6 h-6 text-gray-800 inline-block mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
@@ -19,11 +36,17 @@ export default function Home() {
                                   </h1>
                                   <label htmlFor="username" className="block mt-3 mb-1 text-lg">Username</label>
                                   <input id="username" placeholder="Username" type="text" required
-                                         className="block border px-2 py-1.5 w-full rounded-md" />
+                                         className="block border px-2 py-1.5 w-full rounded-md"
+                                         value={username}
+                                         onChange={(e) => setUsername(e.target.value)}
+                                  />
                                   <label htmlFor="password" className="block mt-3 mb-1 text-lg">password</label>
                                   <input id="password" placeholder="password" type="password" required
-                                         className="block border px-2 py-1.5 w-full rounded-md" />
-                                  <button className="bg-blue-400 text-white rounded-md w-full py-1.5 my-5">เข้าสู่ระบบ</button>
+                                         className="block border px-2 py-1.5 w-full rounded-md"
+                                         value={password}
+                                         onChange={(e) => setPassword(e.target.value)}
+                                  />
+                                  <button className="bg-blue-400 text-white rounded-md w-full py-1.5 my-5" type={"submit"}>เข้าสู่ระบบ</button>
                               </div>
                           </form>
                       </div>
