@@ -2,84 +2,123 @@
 import Sidebar from "@/app/components/sidebar_admin/Sidebar";
 import Image from "next/image";
 import Link from "next/link";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import useSWR from "swr";
 import {Dialog} from "@headlessui/react";
 
+interface Report {
+    _id: string;
+    title: string;
+    department: string;
+    createdAt: string;
+    status: "pending" | "inprogress" | "success";
+    fixedBy: string;
+    updatedAt: string;
+}
+
+interface FormData {
+    id: string;
+    status: "pending" | "inprogress" | "success";
+    // Add other properties here...
+}
+
 const fetcher = (url: string, accessToken: string) => {
-    return axios.get(url, {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`, // Replace 'accessToken' with your actual access token
-            'Content-Type': 'application/json', // You can specify other headers as needed
-        },
-    })
-        .then(res => res.data);
+    return axios
+        .get<Report[]>(url, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+        })
+        .then((res) => res.data);
 };
+
 const ProblemList = () => {
-    const accessToken:any = sessionStorage.getItem('access_token')
-    const { data, error } = useSWR('http://localhost:5000/report', (url) => fetcher(url, accessToken))
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+    const { data, error } = useSWR<Report[]>("http://localhost:5000/report", (url:any) => fetcher(url, accessToken));
     const [loading, setLoading] = useState(false);
-    const [editReport, setEditReport] = useState(null);
-    let [isOpen, setIsOpen] = useState(true)
-    const [formData, setFormData] = useState({});
-    const [fixedBy, setFixedBy] = useState('');
+    const [editReport, setEditReport] = useState<Report | null>(null);
+    const [isOpen, setIsOpen] = useState(true); // Use a boolean to control the dialog
+    const [formData, setFormData] = useState<FormData>({ id: "", status: "pending" });
+    const [fixedBy, setFixedBy] = useState<string>("");
+
     const deleteReport = async (id: string) => {
         setLoading(true);
         try {
             await axios.delete(`http://localhost:5000/report/${id}`, {
                 headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                }
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                },
             });
-            alert('ลบรายการแจ้งซ่อมเรียบร้อยแล้ว');
+            alert("ลบรายการแจ้งซ่อมเรียบร้อยแล้ว");
             window.location.reload();
         } catch (err) {
-            alert('เกิดข้อผิดพลาด');
+            alert("เกิดข้อผิดพลาด");
         } finally {
             setLoading(false);
         }
-    }
+    };
 
-    const openEditDialog = (report: any) => {
+    const openEditDialog = (report: Report) => {
         setEditReport(report);
-        setFormData({ id: report._id, title: report.title, department: report.department, status: report.status }); // Set initial data
+        setFormData({
+            id: report._id,
+            status: report.status,
+            // Add other properties here...
+        });
         setIsOpen(true);
-    }
+    };
 
     const profile = async () => {
-        await axios.get('http://localhost:5000/auth/profile', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-            }
-        }).then(res => {
-            console.log(res.data);
-            setFixedBy(res.data.username);
-        }).catch(err => {
+        try {
+            const response = await axios.get("http://localhost:5000/auth/profile", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log(response.data);
+            setFixedBy(response.data.username);
+        } catch (err) {
             console.log(err);
-        })
+        }
     };
-    profile()
+    profile();
 
     const saveEdit = async () => {
-        await axios.patch(`http://localhost:5000/report/${formData.id}`, {
-            status: formData.status,
-            fixedBy: fixedBy
-        }, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
+        try {
+            if (formData.id && formData.status) {
+                await axios.patch(
+                    `http://localhost:5000/report/${formData.id}`,
+                    {
+                        status: formData.status,
+                        fixedBy: fixedBy,
+                        // Add other properties here...
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                alert("แก้ไขรายการแจ้งซ่อมเรียบร้อยแล้ว");
+                window.location.reload();
             }
-        }).then(res => {
-            alert('แก้ไขรายการแจ้งซ่อมเรียบร้อยแล้ว');
-            window.location.reload();
-        }).catch(err => {
-            alert('เกิดข้อผิดพลาด');
-        })
-    }
+        } catch (err) {
+            alert("เกิดข้อผิดพลาด");
+        }
+    };
 
+    useEffect(() => {
+        const token = sessionStorage.getItem("access_token");
+        if (token) {
+            setAccessToken(token);
+        }
+        profile();
+    }, []);
     return (
         <div className="flex h-screen">
             <Sidebar />
