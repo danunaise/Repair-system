@@ -3,6 +3,7 @@ import React, { Fragment, useState } from 'react';
 import Sidebar from "@/app/components/sidebar_admin/Sidebar";
 import {Listbox, Transition} from "@headlessui/react";
 import {CheckIcon, ChevronUpDownIcon} from "@heroicons/react/20/solid";
+import axios from "axios";
 
 const people = [
     { name: 'เลือกแผนก' },
@@ -14,6 +15,43 @@ const people = [
 ]
 const AddUsersPage = () => {
     const [selected, setSelected] = useState(people[0])
+
+    const [fname, setFname] = useState('')
+    const [lname, setLname] = useState('')
+    const [department, setDepartment] = useState('')
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleSubmit = (e: any) => {
+        const yourAccessToken = sessionStorage.getItem('access_token')
+        if ((selected.name === 'เลือกแผนก')) {
+            e.preventDefault()
+            alert('กรุณาเลือกแผนก');
+        } else {
+            axios.post('http://localhost:5000/auth', {
+                firstname: fname,
+                lastname: lname,
+                department: selected.name,
+                email: email,
+                username: username,
+                password: password,
+            } , {
+                headers: {
+                    'Authorization': 'Bearer ' + yourAccessToken,
+                    'Content-Type': 'application/json',
+                }
+            }).then(res => {
+                alert('เพิ่มสมาชิกสำเร็จ')
+                window.location.href = '/trace'
+                console.log(res)
+            }).catch(err => {
+                console.log(err)
+                alert(err.response.data.message)
+            })
+        }
+    }
+
     return (
         <div className="flex h-screen">
             <Sidebar />
@@ -26,7 +64,7 @@ const AddUsersPage = () => {
                 </div>
                 <div className="flex items-center justify-center w-full mt-10 py-3">
                     <div className="card bg-white flex justify-center w-[800px] px-5 shadow-lg rounded-md">
-                    <form className="w-full max-w-lg">
+                    <form className="w-full max-w-lg" onSubmit={handleSubmit}>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full px-3">
                                 <label htmlFor={"fname"} className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">ชื่อ</label>
@@ -34,12 +72,14 @@ const AddUsersPage = () => {
                                        type={"text"} placeholder={"ชื่อ"} required
                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border
                                        border-gray-200 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                       value={fname} onChange={e => setFname(e.target.value)}
                                 />
                                 <label htmlFor={"lname"} className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">นามสกุล</label>
                                 <input id={"lname"} name={"lname"}
                                        type={"text"} placeholder={"นามสกุล"} required
                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border
                                        border-gray-200 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                       value={lname} onChange={e => setLname(e.target.value)}
                                 />
                                 <Listbox value={selected} onChange={setSelected}>
                                     <Listbox.Label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">แผนก</Listbox.Label>
@@ -94,21 +134,24 @@ const AddUsersPage = () => {
                                 </Listbox>
                                 <label htmlFor={"Email"} className="block uppercase tracking-wide text-gray-700 mt-3 text-xs font-bold mb-2">Email</label>
                                 <input id={"Email"} name={"Email"}
-                                       type={"text"} placeholder={"Email"} required
+                                       type={"email"} placeholder={"Email"} required
                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border
                                        border-gray-200 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                       value={email} onChange={e => setEmail(e.target.value)}
                                 />
                                 <label htmlFor={"Username"} className="block uppercase tracking-wide text-gray-700 mt-3 text-xs font-bold mb-2">Username</label>
                                 <input id={"Username"} name={"Username"}
                                        type={"text"} placeholder={"Username"} required
                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border
                                        border-gray-200 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                       value={username} onChange={e => setUsername(e.target.value)}
                                 />
                                 <label htmlFor={"password"} className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">password</label>
                                 <input id={"password"} name={"password"}
                                        type={"text"} placeholder={"password"} required
                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border
                                        border-gray-200 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                       value={password} onChange={e => setPassword(e.target.value)}
                                 />
                                 <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                     บันทึก

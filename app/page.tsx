@@ -5,7 +5,6 @@ import axios from "axios";
 export default function Home() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const login = await axios.post('http://localhost:5000/auth/login', {
@@ -14,12 +13,28 @@ export default function Home() {
         }).then((response) => {
             console.log(response);
             console.log(response.data.access_token)
-            sessionStorage.setItem('access_token', response.data.access_token);
-            window.location.href = '/report';
+            sessionStorage.setItem('access_token', response.data.access_token)
+            const accessToken = sessionStorage.getItem('access_token')
+            const profile = axios.get('http://localhost:5000/auth/profile', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`, // Replace 'accessToken' with your actual access token
+                    'Content-Type': 'application/json', // You can specify other headers as needed
+                }
+            }).then((response) => {
+                if (response.data.role === 'admin') {
+                    window.location.href = '/problemList';
+                } else {
+                    window.location.href = '/report';
+                }
+            }).catch((error) => {
+                console.log(error);
+            })
         }).catch((error) => {
+            alert(error.response.data.message)
             console.log(error);
         });
     }
+
   return (
       <div className="flex h-screen">
           <main className="flex-grow flex items-center justify-center">

@@ -23,19 +23,38 @@ const ReportPage = () => {
     const [title, setTitle] = useState('')
     const [details, setDetails] = useState('')
     const handleSubmit = (e: any) => {
-        e.preventDefault()
-        axios.post('http://localhost:5000/report', {
-            roomId: parseInt(room),
-            // floor: e.target.floor.value,
-            department: selected.name,
-            title: title,
-            description: details,
-        }).then(res => {
-            console.log(res)
-        }).catch(err => {
-            console.log(err)
-            alert(err.response.data.message)
-        })
+        const accessToken = sessionStorage.getItem('access_token')
+        if ((selected.name === 'เลือกแผนก')) {
+            e.preventDefault()
+            alert('กรุณาเลือกแผนก');
+        } else {
+            axios.post('http://localhost:5000/report', {
+                roomId: parseInt(room),
+                // floor: e.target.floor.value,
+                department: selected.name,
+                title: title,
+                description: details,
+            }, {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken, // Replace 'yourAccessToken' with your actual access token
+                    'Content-Type': 'application/json', // You can specify other headers as needed
+                }
+            }).then(res => {
+                alert('แจ้งซ่อมสำเร็จ')
+                window.location.href = '/trace'
+                console.log(res)
+            }).catch(err => {
+                console.log(err)
+                alert(err.response.data.message)
+            })
+        }
+        const isLogin = () => {
+            if (accessToken) {
+                window.location.href = '/report'
+            } else {
+                window.location.href = '/'
+            }
+        }
     }
     return (
         <div className="flex">

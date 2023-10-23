@@ -4,9 +4,25 @@ import Sidebar from "../../components/Sidebar"
 import axios from "axios";
 import useSWR from "swr";
 
-const fetcher = (url: string) => axios.get(url).then(res => res.data)
+const fetcher = (url: string, accessToken: string) => {
+    return axios.get(url, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`, // Replace 'accessToken' with your actual access token
+            'Content-Type': 'application/json', // You can specify other headers as needed
+        },
+    })
+        .then(res => res.data);
+};
 const TracePage = () => {
-    const { data, error } = useSWR('http://localhost:5000/report', fetcher)
+    const accessToken:any = sessionStorage.getItem('access_token')
+    const { data, error } = useSWR('http://localhost:5000/report', (url) => fetcher(url, accessToken))
+    const isLogin = () => {
+        if (accessToken) {
+            window.location.href = '/report'
+        } else {
+            window.location.href = '/'
+        }
+    }
     return (
         <div className="flex">
             <Sidebar />
@@ -20,7 +36,7 @@ const TracePage = () => {
                 <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th scope="col" className="px-6 py-4 font-medium text-gray-900">ไอดี</th>
+                            <th scope="col" className="px-6 py-4 font-medium text-gray-900">หมายเลขอ้างอิง</th>
                             <th scope="col" className="px-6 py-4 font-medium text-gray-900">อุปกรณ์</th>
                             <th scope="col" className="px-6 py-4 font-medium text-gray-900">แผนก</th>
                             <th scope="col" className="px-6 py-4 font-medium text-gray-900">วันที่</th>
@@ -31,8 +47,8 @@ const TracePage = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                     {data?.map((item: any) => (
-                        <tr className="hover:bg-gray-50" key={item.reportId}>
-                            <th className="px-6 py-4 font-medium text-gray-900">{item.reportId}</th>
+                        <tr className="hover:bg-gray-50" key={item._id}>
+                            <th className="px-6 py-4 font-medium text-gray-900">{item._id}</th>
                             <td className="px-6 py-4">{item.title}</td>
                             <td className="px-6 py-4">{item.department}</td>
                             <td className="px-6 py-4">
